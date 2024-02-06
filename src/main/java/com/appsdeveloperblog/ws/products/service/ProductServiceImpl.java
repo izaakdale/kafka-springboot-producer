@@ -8,6 +8,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
 
+import com.appsdeveloperblog.ws.core.ProductCreatedEvent;
 import com.appsdeveloperblog.ws.products.rest.CreateProductRequestModel;
 
 @Service
@@ -30,7 +31,7 @@ public class ProductServiceImpl implements ProductService {
         productRestModel.getTitle(), productRestModel.getPrice(), productRestModel.getQuantity());
 
     logger.info("publishing product created event");
-    SendResult<String, ProductCreatedEvent> result = kafkaTemplate.send("topic2",
+    SendResult<String, ProductCreatedEvent> result = kafkaTemplate.send("product-created-events",
         productID, productCreatedEvent).get();
 
     logger.info("partition: " + result.getRecordMetadata().partition());
